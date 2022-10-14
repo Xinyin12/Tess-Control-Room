@@ -1,0 +1,9 @@
+resource_id,units,interval
+Feeder_1_capacity,MW,60
+Feeder_1_storage,MWh,300
+Feeder_2_capacity,MW,60
+Feeder_2_storage,MWh,300
+Feeder_3_capacity,MW,60
+Feeder_3_storage,MWh,300
+Feeder_4_capacity,MW,60
+Feeder_4_storage,MWh,300
