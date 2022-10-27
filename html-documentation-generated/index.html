@@ -1,0 +1,1707 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Control Room App API</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>Control Room App API</h1>
+    <div class="app-desc">Control Room App API</div>
+    <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+    <div class="app-desc">Contact Info: <a href="you@your-company.com">you@your-company.com</a></div>
+    <div class="app-desc">Version: 1.0.0</div>
+    <div class="app-desc">BasePath:/ZONGYUEP_1/SLAC_13_API/1.0.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Chart1">Chart1</a></h4>
+  <ul>
+  <li><a href="#getLoadBatteryGet"><code><span class="http-method">get</span> /get/load/battery</code></a></li>
+  <li><a href="#getLoadEvGet"><code><span class="http-method">get</span> /get/load/ev</code></a></li>
+  <li><a href="#getLoadHeaterGet"><code><span class="http-method">get</span> /get/load/heater</code></a></li>
+  <li><a href="#getLoadHvacGet"><code><span class="http-method">get</span> /get/load/hvac</code></a></li>
+  <li><a href="#getLoadPvGet"><code><span class="http-method">get</span> /get/load/pv</code></a></li>
+  <li><a href="#getLoadThermalGet"><code><span class="http-method">get</span> /get/load/thermal</code></a></li>
+  </ul>
+  <h4><a href="#Chart2">Chart2</a></h4>
+  <ul>
+  <li><a href="#getEnergyBatteryGet"><code><span class="http-method">get</span> /get/energy/battery</code></a></li>
+  <li><a href="#getEnergyEvGet"><code><span class="http-method">get</span> /get/energy/ev</code></a></li>
+  <li><a href="#getEnergyHeaterGet"><code><span class="http-method">get</span> /get/energy/heater</code></a></li>
+  <li><a href="#getEnergyThermalGet"><code><span class="http-method">get</span> /get/energy/thermal</code></a></li>
+  </ul>
+  <h4><a href="#Chart3">Chart3</a></h4>
+  <ul>
+  <li><a href="#getAuctionGet"><code><span class="http-method">get</span> /get/auction</code></a></li>
+  </ul>
+  <h4><a href="#Chart4">Chart4</a></h4>
+  <ul>
+  <li><a href="#getLoadBatteryStatusGet"><code><span class="http-method">get</span> /get/load/battery/{status}</code></a></li>
+  <li><a href="#getLoadEvStatusGet"><code><span class="http-method">get</span> /get/load/ev/{status}</code></a></li>
+  <li><a href="#getLoadHeaterStatusGet"><code><span class="http-method">get</span> /get/load/heater/{status}</code></a></li>
+  <li><a href="#getLoadHvacStatusGet"><code><span class="http-method">get</span> /get/load/hvac/{status}</code></a></li>
+  <li><a href="#getLoadPvStatusGet"><code><span class="http-method">get</span> /get/load/pv/{status}</code></a></li>
+  <li><a href="#getLoadThermalStatusGet"><code><span class="http-method">get</span> /get/load/thermal/{status}</code></a></li>
+  <li><a href="#getLoadTotalStatusGet"><code><span class="http-method">get</span> /get/load/total/{status}</code></a></li>
+  </ul>
+  <h4><a href="#Chart5">Chart5</a></h4>
+  <ul>
+  <li><a href="#getEnergyBatteryStatusGet"><code><span class="http-method">get</span> /get/energy/battery/{status}</code></a></li>
+  <li><a href="#getEnergyEvStatusGet"><code><span class="http-method">get</span> /get/energy/ev/{status}</code></a></li>
+  <li><a href="#getEnergyHeaterStatusGet"><code><span class="http-method">get</span> /get/energy/heater/{status}</code></a></li>
+  <li><a href="#getEnergyHvacStatusGet"><code><span class="http-method">get</span> /get/energy/hvac/{status}</code></a></li>
+  <li><a href="#getEnergyPvStatusGet"><code><span class="http-method">get</span> /get/energy/pv/{status}</code></a></li>
+  <li><a href="#getEnergyThermalStatusGet"><code><span class="http-method">get</span> /get/energy/thermal/{status}</code></a></li>
+  <li><a href="#getEnergyTotalStatusGet"><code><span class="http-method">get</span> /get/energy/total/{status}</code></a></li>
+  </ul>
+
+  <h1><a name="Chart1">Chart1</a></h1>
+  <div class="method"><a name="getLoadBatteryGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/battery</code></pre></div>
+    <div class="method-summary">gets power of all batteries (<span class="nickname">getLoadBatteryGet</span>)</div>
+    <div class="method-notes">Gets power of all batteries</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadEvGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/ev</code></pre></div>
+    <div class="method-summary">gets power of all EVs (<span class="nickname">getLoadEvGet</span>)</div>
+    <div class="method-notes">Gets power of all EVs</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadHeaterGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/heater</code></pre></div>
+    <div class="method-summary">gets power of all water heaters (<span class="nickname">getLoadHeaterGet</span>)</div>
+    <div class="method-notes">Gets power of all water heaters</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadHvacGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/hvac</code></pre></div>
+    <div class="method-summary">gets power of all HVACs (<span class="nickname">getLoadHvacGet</span>)</div>
+    <div class="method-notes">Gets power of all HVACs</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadPvGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/pv</code></pre></div>
+    <div class="method-summary">gets power of all PVs (<span class="nickname">getLoadPvGet</span>)</div>
+    <div class="method-notes">Gets power of all PVs</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadThermalGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/thermal</code></pre></div>
+    <div class="method-summary">gets power of all thermal storages (<span class="nickname">getLoadThermalGet</span>)</div>
+    <div class="method-notes">Gets power of all thermal storages</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Chart2">Chart2</a></h1>
+  <div class="method"><a name="getEnergyBatteryGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/battery</code></pre></div>
+    <div class="method-summary">gets energy consumption of all batteries (<span class="nickname">getEnergyBatteryGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all batteries</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyEvGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/ev</code></pre></div>
+    <div class="method-summary">gets energy consumption of all EVs (<span class="nickname">getEnergyEvGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all EVs</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyHeaterGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/heater</code></pre></div>
+    <div class="method-summary">gets energy consumption of all water heaters (<span class="nickname">getEnergyHeaterGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all water heaters</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyThermalGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/thermal</code></pre></div>
+    <div class="method-summary">gets energy consumption of all thermal storages (<span class="nickname">getEnergyThermalGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all thermal storages</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Chart3">Chart3</a></h1>
+  <div class="method"><a name="getAuctionGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/auction</code></pre></div>
+    <div class="method-summary">Pending (<span class="nickname">getAuctionGet</span>)</div>
+    <div class="method-notes">Pending</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Chart4">Chart4</a></h1>
+  <div class="method"><a name="getLoadBatteryStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/battery/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all batteries based on status (<span class="nickname">getLoadBatteryStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all batteries based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadEvStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/ev/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all EVs based on status (<span class="nickname">getLoadEvStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all EVs based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadHeaterStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/heater/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all water heaters based on status (<span class="nickname">getLoadHeaterStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all water heaters based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadHvacStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/hvac/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all HVacs based on status (<span class="nickname">getLoadHvacStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all hhavs based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadPvStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/pv/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all PVs based on status (<span class="nickname">getLoadPvStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all PVs based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadThermalStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/thermal/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all thermal storages based on status (<span class="nickname">getLoadThermalStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all thermal storages based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getLoadTotalStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/load/total/{status}</code></pre></div>
+    <div class="method-summary">Gets power of all devices based on status (<span class="nickname">getLoadTotalStatusGet</span>)</div>
+    <div class="method-notes">Gets power of all devices storages based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#load_data">load_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "load" : 100,
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <h1><a name="Chart5">Chart5</a></h1>
+  <div class="method"><a name="getEnergyBatteryStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/battery/{status}</code></pre></div>
+    <div class="method-summary">Gets energy consumption of all batteries based on status (<span class="nickname">getEnergyBatteryStatusGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all batteries based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyEvStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/ev/{status}</code></pre></div>
+    <div class="method-summary">Gets energy consumption of all EVs based on status (<span class="nickname">getEnergyEvStatusGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all EVs based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyHeaterStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/heater/{status}</code></pre></div>
+    <div class="method-summary">Gets energy consumption of all water headers based on status (<span class="nickname">getEnergyHeaterStatusGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all water heaters based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyHvacStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/hvac/{status}</code></pre></div>
+    <div class="method-summary">!! Should be disabled !! (<span class="nickname">getEnergyHvacStatusGet</span>)</div>
+    <div class="method-notes">!! Should be disabled !!</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyPvStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/pv/{status}</code></pre></div>
+    <div class="method-summary">!! Should be disabled !! (<span class="nickname">getEnergyPvStatusGet</span>)</div>
+    <div class="method-notes">!! Should be disabled !!</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyThermalStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/thermal/{status}</code></pre></div>
+    <div class="method-summary">Gets energy consumption of all thermal storages based on status (<span class="nickname">getEnergyThermalStatusGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all water thermal storages based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getEnergyTotalStatusGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get/energy/total/{status}</code></pre></div>
+    <div class="method-summary">Gets energy consumption of all devices based on status (<span class="nickname">getEnergyTotalStatusGet</span>)</div>
+    <div class="method-notes">Gets energy consumption of all devices based on status</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">status (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash;  </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#energy_data">energy_data</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+}, {
+  "unit" : "MWh",
+  "feeder_id" : "feeder_id",
+  "device_type" : "Battery",
+  "id" : "id",
+  "energy" : 100,
+  "status" : 0,
+  "timestamp" : "2000-01-23T04:56:07.000+00:00"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    search results matching criteria
+        
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#energy_data"><code>energy_data</code></a></li>
+    <li><a href="#load_data"><code>load_data</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="energy_data"><code>energy_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">feeder_id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">energy </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 100</span></div>
+<div class="param">status </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 0:available;-1:unavailable </div>
+          <div class="param-desc"><span class="param-type">example: 0</span></div>
+<div class="param">device_type </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Battery</span></div>
+<div class="param">unit </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: MWh</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="load_data"><code>load_data</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">feeder_id </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+<div class="param">load </div><div class="param-desc"><span class="param-type"><a href="#BigDecimal">BigDecimal</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: 100</span></div>
+<div class="param">status </div><div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> 0:available;1:dispatched;-1:unavailable </div>
+          <div class="param-desc"><span class="param-type">example: 0</span></div>
+<div class="param">device_type </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Battery</span></div>
+<div class="param">unit </div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: MWh</span></div>
+<div class="param">timestamp </div><div class="param-desc"><span class="param-type"><a href="#DateTime">Date</a></span>  format: date-time</div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>
