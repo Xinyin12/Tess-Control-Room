@@ -2,7 +2,6 @@ test/*.csv
 test/*.json
 __pycache__/
 gridlabd/gridlabd.json
-gridlabd/gridlabd.db
 gridlabd/gridlab.json
 gridlabd.db
 gridlabd/gridlabd.bak
