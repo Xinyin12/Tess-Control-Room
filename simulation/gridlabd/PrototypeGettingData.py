@@ -64,5 +64,14 @@ def get_auctions_markettime_resourceid_quantity_price_auctionid():
     return rv
 
 
+@app.route('/get/auction_pv')
+def get_auction_pv():
+    cur = get_db().cursor().execute(f"""SELECT *
+FROM agents, auctions
+WHERE devices.device_type = "PV" AND agents.agent_id = devices.agent_id;
+""")
+    rv = cur.fetchall()
+    return rv
+
 if __name__ == "__main__":
     app.run(debug=True)

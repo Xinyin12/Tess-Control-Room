@@ -22,6 +22,20 @@
 #include "config.glm"
 #endif
 
+
+//
+// Weather
+//
+module climate;
+#weather get NH-Concord_Municipal_Arpt.tmy3
+object climate
+{
+    tmyfile "NH-Concord_Municipal_Arpt.tmy3";
+    city "Concord NH";
+    interpolate "LINEAR";
+    on_commit "python:main.weather_commit";
+}
+
 //
 // Starttime - use the 'wayback' variable to set how far back to go before dropping into realtime mode
 //

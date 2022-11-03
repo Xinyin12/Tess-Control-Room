@@ -11,6 +11,7 @@ import uuid
 import time
 import sqlite3
 from database import Tess2Database
+import devices
 
 # 
 # Options
@@ -57,9 +58,11 @@ DATABASE = None
 #
 
 def guid():
+    """Return a globally unique id"""
     return uuid.uuid4().hex[2:]
 
 def timestep(t0,ts,timeout=3600):
+    """Advanced to the next timestep after wait"""
     debug(f"timestep(t0={dt.datetime.fromtimestamp(t0)},ts={ts}s,timeout={timeout}s)")
     now = dt.datetime.now().timestamp()
     wait = round(t0 - now,6)
@@ -79,6 +82,11 @@ def timestep(t0,ts,timeout=3600):
 #
 # Initialization
 #
+
+SIMNOW = 0
+def now():
+    global SIMNOW
+    return SIMNOW
 
 def init_options(varname):
     PYTHON_OPTIONS = gridlabd.get_global(varname).strip('"').split(",")
@@ -104,25 +112,39 @@ def on_init(t):
         DATABASE = Tess2Database(":memory:")
     else:
         DATABASE = Tess2Database(dbname)
+    global SIMNOW
+    SIMNOW = t
+    DATABASE.set_now(now)
+    devices.init(gridlabd=gridlabd,DATABASE=DATABASE)
     DATABASE.run_script(gridlabd.get_global('SQLITE_SCHEMA'))
-    verbose(f"processing wayback from {dt.datetime.fromtimestamp(t)}...")
+    verbose(f"starting wayback from {dt.datetime.fromtimestamp(t)}...")
     return True
 
 def utility_init(obj,t):
     print('Setting utility name to',obj)
-    DATABASE.insert_settings('global','utility_name',obj,gridlabd.get_global('clock'))
+    DATABASE.insert_settings(guid(),'utility','name',obj)
     return 0
+
+#
+# Termination
+#
+
+def on_term(t):
+    DATABASE.dump("dump_")
+
 #
 # Precommit/Commit
 #
 
 def on_precommit(t):
-    debug(f"t={dt.datetime.fromtimestamp(t)}")
+    global SIMNOW
+    SIMNOW = t
+    debug(f"t={SIMNOW}")
     try:
         DATABASE.commit()
     except:
         warning(f"database commit failed at {dt.datetime.fromtimestamp(t)}")
-    return gridlabd.NEVER
+    return devices.update(t)
 
 def on_commit(t):
     debug(f"t={dt.datetime.fromtimestamp(t)}")
@@ -131,6 +153,15 @@ def on_commit(t):
         progress(f"database commit at {dt.datetime.fromtimestamp(t)}, press Ctrl-C to stop")
     except:
         warning(f"database commit failed at {dt.datetime.fromtimestamp(t)}")
+    return gridlabd.NEVER
+
+#
+# Weather
+#
+def weather_commit(obj,t):
+    if t % 60 == 0:
+        data = gridlabd.get_object(obj)
+        DATABASE.insert_weather(data["city"],float(data["temperature"].split()[0]),float(data["humidity"].split()[0])*100,float(data["solar_global"].split()[0]),float(data["wind_speed"].split()[0])*2.24,float(data["wind_dir"].split()[0]))
     return gridlabd.NEVER
 
 #
@@ -204,8 +235,7 @@ def auction_postsync(obj,t):
 #
 
 def device_init(obj,t):
-    device = gridlabd.get_object(obj)
-    DATABASE.insert_devices(obj,device['agent'],device['type'])
+    devices.create(obj,t)
     return 0
 
 def device_precommit(obj,t):
@@ -244,12 +274,6 @@ def device_commit(obj,t):
         if cost != 0 and order_id != "":
             DATABASE.replace_settlements(record_time=gridlabd.get_global('clock'),order_id=order_id,cost=cost)
     return gridlabd.NEVER
-
-# def device_presync(obj,t):
-#     return gridlabd.NEVER
-
-# def device_sync(obj,t):
-#     return gridlabd.NEVER
 
 #
 # Device-specific bidding strategies
@@ -335,6 +359,8 @@ def submit_order(obj,resource_id,auction_id,quantity,price,flexible,state,market
     verbose(f"{obj} orders {quantity:.3f} at {price:.2f} from {resource_id} in auction {auction_id}")
     order_id = guid()
     DATABASE.replace_orders(gridlabd.get_global('clock'),order_id,obj,resource_id,auction_id,quantity,price,flexible,state)
+    meter_id = guid()
+    DATABASE.insert_meter(meter_id,obj,real_power=quantity);
     unit = dict(constraint="power",storage="energy")[market_type]
     gridlabd.set_value(obj,f"{unit}_order",order_id)
     gridlabd.set_value(obj,f"{market_type}_auctionid",auction_id)

@@ -10,12 +10,21 @@ In addition, the `commit()` and `rollback()` methods are made available
 directly to instances of the class.
 """
 
-import os
+import os, sys
 import sqlite3
 import datetime as dt
 import re
 
 twospaces = re.compile("\\s\\s+")
+
+QUIET = False
+
+def now():
+    return dt.datetime.now().timestamp()
+
+def error(msg):
+    if not QUIET:
+        print(f"ERROR [database]: {msg}",file=sys.stderr)
 
 class Tess2Database:
 
@@ -28,6 +37,10 @@ class Tess2Database:
             self.backupfile = os.path.splitext(db)[0] + ".bak"
             self.log = open(self.logfile,"w")
             self.logtime = dt.datetime.now() + self.max_logtime
+
+    def set_now(self,call):
+        global now
+        now = call
 
     def commit(self):
         self.db.commit()
@@ -45,13 +58,22 @@ class Tess2Database:
                     error(f"{query}: {e_type.__name__} {e_value}")
                     raise
 
-    def get(self,command):
-        return self.db.execute(command)
-
-    def put(self,command):
+    def get(self,command,ignore=[]):
         try:
             return self.db.execute(command)
         except:
+            e_type, e_value, e_trace = sys.exc_info()
+            if not e_type in ignore:
+                error(f"SQL query [{command}] failed: {e_type.__name__} {e_value}")
+            raise
+
+    def put(self,command,ignore=[]):
+        try:
+            return self.db.execute(command)
+        except:
+            e_type, e_value, e_trace = sys.exc_info()
+            if not e_type in ignore:
+                error(f"SQL query [{command}] failed: {e_type.__name__} {e_value}")
             raise
         finally:
             self.add_log(command)
@@ -92,74 +114,74 @@ class Tess2Database:
                     print(','.join([f'"{x}"' if ',' in x else x for x in values]),file=csv)
                 csv.close()
 
-    def replace_settlements(self,record_time,order_id,cost):
+    def replace_settlements(self,record_time,order_id,cost,valid_at=None):
         return self.put(f"""
             replace into settlements 
-            (record_time, order_id, cost) 
+            (record_time, order_id, cost, valid_at) 
             values 
-            ('{record_time}','{order_id}',{cost});
+            ('{record_time}','{order_id}',{cost},'{valid_at if valid_at else now()}');
             """)
 
-    def insert_settings(self,group,name,value,value_at=None):
+    def insert_settings(self,setting_id,device_id,name,value,valid_at=None):
         return self.put(f"""
             insert into settings
-            (class,name,value_at,value)
+            (setting_id,device_id,name,valid_at,value)
             values
-            ('{group}','{name}','{value_at if value_at else dt.datetime.now().timestamp()}','{value}');
+            ('{setting_id}','{device_id}','{name}','{valid_at if valid_at else now()}','{value}');
             """)
 
-    def insert_agents(self,agent_id,resource_id):
+    def insert_agents(self,agent_id,resource_id,valid_at=None):
         return self.put(f"""
             insert into agents 
-            (agent_id,resource_id) 
+            (agent_id,resource_id,valid_at) 
             values 
-            ('{agent_id}','{resource_id}');
+            ('{agent_id}','{resource_id}','{valid_at if valid_at else now()}');
             """)
 
-    def insert_markets(self,resource_id,units,interval):
+    def insert_markets(self,resource_id,units,interval,valid_at=None):
         return self.put(f"""
             insert into markets
-            ( resource_id, units, interval)
+            ( resource_id, units, interval, valid_at)
             values
-            ('{resource_id}','{units}',{interval});
+            ('{resource_id}','{units}',{interval},'{valid_at if valid_at else now()}');
             """)
 
-    def insert_auctions(self,auction_id,market_id,market_time,resource_id,price,quantity,marginal_type,marginal_order,marginal_quantity,marginal_rank):
+    def insert_auctions(self,auction_id,market_id,market_time,resource_id,price,quantity,marginal_type,marginal_order,marginal_quantity,marginal_rank,valid_at=None):
         return self.put(f"""
-            insert into auctions (auction_id,market_id,market_time,resource_id,price,quantity,marginal_type,marginal_order,marginal_quantity,marginal_rank)
-            values ('{auction_id}','{market_id}','{market_time}','{resource_id}',{price},{quantity},'{marginal_type}','{marginal_order}',{marginal_quantity},{marginal_rank});
+            insert into auctions (auction_id,market_id,market_time,resource_id,price,quantity,marginal_type,marginal_order,marginal_quantity,marginal_rank,valid_at)
+            values ('{auction_id}','{market_id}','{market_time}','{resource_id}',{price},{quantity},'{marginal_type}','{marginal_order}',{marginal_quantity},{marginal_rank},'{valid_at if valid_at else now()}');
             """)
 
-    def insert_devices(self,device_id,agent_id,device_type):
+    def insert_devices(self,device_id,agent_id,device_type,valid_at=None):
         return self.put(f"""
             insert into devices
-            (device_id, agent_id, device_type)
+            (device_id, agent_id, device_type, valid_at)
             values
-            ('{device_id}','{agent_id}','{device_type}');
+            ('{device_id}','{agent_id}','{device_type}','{valid_at if valid_at else now()}');
             """)
 
-    def insert_dispatches(self,record_time, order_id, quantity):
+    def insert_dispatches(self,record_time, order_id, quantity,valid_at=None):
         return self.put(f"""
             insert into dispatches 
-            (record_time, order_id, quantity) 
+            (record_time, order_id, quantity, valid_at) 
             values 
-            ('{record_time}','{order_id}',{quantity});
-            """)
+            ('{record_time}','{order_id}',{quantity},'{valid_at if valid_at else now()}');
+            """,ignore=[sqlite3.IntegrityError])
 
-    def replace_orders(self,record_time,order_id,device_id,resource_id,market_id,quantity,price,flexible,state):
+    def replace_orders(self,record_time,order_id,device_id,resource_id,market_id,quantity,price,flexible,state,valid_at=None):
         return self.put(f"""
             replace into orders
-            (record_time,order_id,device_id,resource_id,market_id,quantity,price,flexible,state)
+            (record_time,order_id,device_id,resource_id,market_id,quantity,price,flexible,state,valid_at)
             values
-            ('{record_time}','{order_id}','{device_id}','{resource_id}','{market_id}',{quantity},{price},{flexible},{state});
+            ('{record_time}','{order_id}','{device_id}','{resource_id}','{market_id}',{quantity},{price},{flexible},{state},'{valid_at if valid_at else now()}');
             """)
 
-    def select_settings_value(self,group,name):
+    def select_settings_value(self,device_id,name):
         return self.get(f"""
             select value 
             from settings
-            where class = '{group}' and name = '{name}'
-            order by value_at desc;
+            where device_id = '{device_id}' and name = '{name}'
+            order by valid_at desc;
             """)
 
     def select_markets_resourceid_units_interval(self):
@@ -190,8 +212,33 @@ class Tess2Database:
             from {table};
             """)
 
-    def select_settlements_sum(self):
+    def select_settlements_sum(self,subtotal=None):
+        if subtotal == 'revenue':
+            where = "where cost > 0"
+        elif subtotal == 'expense':
+            where = "where cost < 0"
+        elif subtotal is None:
+            where = ""
+        else:
+            raise Tess2DatabaseException("subtotal must on of [None,'revenue','expense']")
         return self.get(f"""
             select sum(cost) 
-            from settlements;
+            from settlements
+            {where};
+            """)
+
+    def insert_weather(self,location,temperature,humidity,solar,wind_speed,wind_direction,valid_at=None):
+        return self.put(f"""
+            insert into weather 
+            (location,temperature,humidity,solar,wind_speed,wind_direction,valid_at)
+            values 
+            ('{location}',{temperature},{humidity},{solar},{wind_speed},{wind_direction},'{valid_at if valid_at else now()}');
+            """)
+
+    def insert_meter(self,meter_id,device_id,real_power,reactive_power=None,valid_at=None):
+        return self.put(f"""
+            insert into meters 
+            (meter_id,device_id,real_power,reactive_power,valid_at)
+            values 
+            ('{meter_id}','{device_id}',{real_power},{reactive_power if reactive_power else 'NULL'},'{valid_at if valid_at else now()}');
             """)

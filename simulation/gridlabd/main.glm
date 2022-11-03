@@ -80,8 +80,6 @@ class device
     double energy_dispatch[MWh];
     on_init "python:main.device_init";
     on_precommit "python:main.device_precommit";
-    //on_presync "python:main.device_presync";
-    //on_sync "python:main.device_sync";
     on_commit "python:main.device_commit";
 }
 
