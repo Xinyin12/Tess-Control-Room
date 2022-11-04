@@ -64,14 +64,24 @@ def get_auctions_markettime_resourceid_quantity_price_auctionid():
     return rv
 
 
-@app.route('/get/auction_pv')
+@app.route('/get/load')
 def get_auction_pv():
-    cur = get_db().cursor().execute(f"""SELECT *
-FROM agents, auctions
-WHERE devices.device_type = "PV" AND agents.agent_id = devices.agent_id;
-""")
+    status = request.args.get('status', default = 'all', type = str)
+    device_type = request.args.get('device_type', default = 'all', type = str)
+    if (status == 'dispatched'):
+        cur = get_db().cursor().execute(f"""SELECT * FROM agents;""")
+    elif (status == 'available'):
+        return 'available'
+    elif (status == 'unavailable'):
+        return 'unavailable'
+    elif (status == 'all'):
+        return 'all'
+    else:
+        return 'WRONG STATUS!!'     
+
+    cur = get_db().cursor().execute(f"""SELECT * FROM agents;""")
     rv = cur.fetchall()
-    return rv
+    return str(rv)
 
 if __name__ == "__main__":
     app.run(debug=True)
