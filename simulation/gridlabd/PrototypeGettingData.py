@@ -1,4 +1,7 @@
 import sqlite3
+from datetime import datetime, timedelta
+
+import datetime
 from flask import g, Flask
 from flask import request
 
@@ -19,6 +22,49 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+
+@app.route('/get/actual')
+def get_actual_value():
+    cur = get_db().cursor().execute(f"""
+            SELECT resource_id from resources;
+            """, )
+
+    rv = cur.fetchall()
+    resource_ids = [row[0] for row in rv]
+    results = []
+    for resourceId in resource_ids:
+        cur2 = get_db().cursor().execute(f"""
+                       SELECT sum(meters.real_power), orders.market_id 
+                       FROM meters 
+                       JOIN orders ON device_id 
+                       WHERE orders.resource_id = (?)
+                       GROUP by market_id
+                       ORDER by market_id;
+                    """, (resourceId,))
+        # get the largest market id
+        item_has_largest = cur2.fetchall().last()
+
+        cur3 = get_db().cursor().execute(f"""
+                            SELECT sum(dispatches.quantity), orders.market_id
+                            FROM dispatches JOIN orders ON order_id
+                            WHERE orders.resource_id = (?) AND orders.market_id > (?)
+                            GROUP BY market_id
+                            ORDER by market_id;
+                           """, (resourceId,item_has_largest["market_id"],))
+        results[resourceId] = cur3.fetchall()
+    return results
+
+@app.route('/get/cleared')
+def get_cleared_value():
+    # what reported in the auction table
+    cur = get_db().cursor().execute(f"""
+            SELECT quantity, market_time FROM auctions 
+            WHERE market_time > (?)
+            ORDER BY market_time;
+            """, (datetime.datetime.now() - datetime.timedelta(hours=24)))
+    return cur.fetchall()
+
 
 @app.route('/get/settingsValue')
 def get_settings_value():
