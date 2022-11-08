@@ -50,11 +50,14 @@ def get_actual_value():
 @app.route('/get/cleared')
 def get_cleared_value():
     # what reported in the auction table
+    resource_name = request.args.get('name')
     cur = get_db().cursor().execute(f"""
-            SELECT quantity, market_time FROM auctions 
-            WHERE market_time > (?)
-            ORDER BY market_time;
-            """, (datetime.datetime.now() - datetime.timedelta(hours=24)))
+        SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
+        FROM dispatches JOIN orders ON dispatches.order_id = orders.order_id
+        JOIN resources ON orders.resource_id = resources.resource_id
+        WHERE resources.name = (?)
+        GROUP BY round(dispatches.valid_at/300);
+            """, (resource_name, ))
     return cur.fetchall()
 
 if __name__ == "__main__":

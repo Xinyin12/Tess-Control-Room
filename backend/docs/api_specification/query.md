@@ -22,9 +22,7 @@
    ```sqlite
    SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
    FROM dispatches JOIN orders ON dispatches.order_id = orders.order_id
-   JOIN devices ON orders.device_id = devices.device_id
-   JOIN agents ON devices.agent_id = agents.agent_id
-   JOIN resources ON agents.resource_id = resources.resource_id
+   JOIN resources ON orders.resource_id = resources.resource_id
    WHERE resources.name = 'Feeder_1'
    GROUP BY round(dispatches.valid_at/300);
    
