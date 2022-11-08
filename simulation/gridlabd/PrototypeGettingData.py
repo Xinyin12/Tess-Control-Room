@@ -24,36 +24,21 @@ def close_connection(exception):
         db.close()
 
 
+#/get/actual?name=Feeder_1
 @app.route('/get/actual')
 def get_actual_value():
+    resource_name = request.args.get('name')
     cur = get_db().cursor().execute(f"""
-            SELECT resource_id from resources;
-            """, )
+            SELECT meters.valid_at AS x, sum(meters.real_power) AS y
+            FROM meters JOIN devices ON meters.device_id = devices.device_id
+            JOIN agents ON devices.agent_id = agents.agent_id
+            JOIN resources ON agents.resource_id = resources.resource_id
+            WHERE resources.name = (?)
+            group by round(meters.valid_at/300);
+        """, (resource_name,))
 
     rv = cur.fetchall()
-    resource_ids = [row[0] for row in rv]
-    results = []
-    for resourceId in resource_ids:
-        cur2 = get_db().cursor().execute(f"""
-                       SELECT sum(meters.real_power), orders.market_id 
-                       FROM meters 
-                       JOIN orders ON device_id 
-                       WHERE orders.resource_id = (?)
-                       GROUP by market_id
-                       ORDER by market_id;
-                    """, (resourceId,))
-        # get the largest market id
-        item_has_largest = cur2.fetchall().last()
-
-        cur3 = get_db().cursor().execute(f"""
-                            SELECT sum(dispatches.quantity), orders.market_id
-                            FROM dispatches JOIN orders ON order_id
-                            WHERE orders.resource_id = (?) AND orders.market_id > (?)
-                            GROUP BY market_id
-                            ORDER by market_id;
-                           """, (resourceId,item_has_largest["market_id"],))
-        results[resourceId] = cur3.fetchall()
-    return results
+    return str(rv)
 
 @app.route('/get/cleared')
 def get_cleared_value():
