@@ -41,8 +41,14 @@ def get_all_resources():
 # TODO: now-12hours, Order
 # choose name to rerender
 # use resource id
-# limit 144
-@app.route('/get/actual')
+
+# load, storage: different queries by arg
+# load/power:interval 60 limit 720,
+#@app.route('/get/actual_power'): GROUP BY round(meters.valid_at/60)
+
+# storage/energy: interval 300 limit 144
+#@app.route('/get/actual_energy') : GROUP BY round(meters.valid_at/300)
+@app.route('/get/actual_power')
 def get_actual_value():
     resource_id = request.args.get('resource_id')
     # now - 12 hours
@@ -51,7 +57,7 @@ def get_actual_value():
             FROM meters JOIN devices ON meters.device_id = devices.device_id
             JOIN agents ON devices.agent_id = agents.agent_id
             WHERE agents.resource_id = (?)
-            GROUP BY round(meters.valid_at/300)
+            GROUP BY round(meters.valid_at/60)
             (ORDER BY) 
             ;
         """, (resource_id,))
@@ -61,6 +67,10 @@ def get_actual_value():
 
 # TODO: now-12hours, Order
 # use resource id
+# now - 12 hours
+# market interval 60 limit 720
+# market interval 300 limit 144
+#
 @app.route('/get/cleared')
 def get_cleared_value():
     # what reported in the auction table
@@ -69,7 +79,7 @@ def get_cleared_value():
         SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
         FROM dispatches JOIN orders ON dispatches.order_id = orders.order_id
         JOIN resources ON orders.resource_id = resources.resource_id
-        WHERE resources.name = (?)
+        WHERE resources.resource_id = (?)
         GROUP BY round(dispatches.valid_at/300);
             """, (resource_name, ))
     return cur.fetchall()
