@@ -1,7 +1,6 @@
 import sqlite3
-from datetime import datetime, timedelta
 
-import datetime
+import time
 from flask import g, Flask
 from flask import request
 
@@ -34,12 +33,16 @@ def close_connection(exception):
 # optional argument, last_resource_id
 # order return value yb resource id, return next 20 values greater than last_resource_id
 
-
 @app.route('/get/resources')
 def get_all_resources():
+    last_resource_id = request.args.get('last_resource_id', default = 0)
     cur = get_db().cursor().execute(f"""
-            SELECT resource_id from resources;
-        """)
+            SELECT distinct(resource_id), name, valid_at 
+            FROM resources
+            WHERE resource_id > (?)
+            ORDER BY valid_at
+            LIMIT 20;
+        """, (last_resource_id,))
     rv = cur.fetchall()
     return str(rv)
 
@@ -71,6 +74,19 @@ def get_actual_value():
     rv = cur.fetchall()
     return str(rv)
 
+
+###
+# Example:
+# SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
+#        FROM dispatches
+#        JOIN orders ON dispatches.order_id = orders.order_id
+#        JOIN auctions ON auctions.auction_id = orders.auction_id
+#        WHERE auctions.market_id = "6c54539ee84996b0ce60f050c98ced" AND dispatches.valid_at > 0
+#        GROUP BY round(dispatches.valid_at/60 - 0.5)
+#        ORDER BY dispatches.valid_at DESC
+#        LIMIT 720; 
+# ###
+
 # TODO: now-12hours, Order
 # use resource id
 # now - 12 hours
@@ -79,20 +95,43 @@ def get_actual_value():
 # order by 'x'
 # use market_id
 # can get negative quantity*
-@app.route('/get/cleared')
-def get_cleared_value():
+@app.route('/get/cleared_power')
+def get_cleared_value_power():
     # what reported in the auction table
     market_id = request.args.get('market_id')
+    current_time = round(time.time()) # seconds since epoch
+    start_time = current_time - 12 * 60 * 60
     cur = get_db().cursor().execute(f"""
         SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
-        FROM dispatches JOIN orders ON dispatches.order_id = orders.order_id
-        JOIN auctions ON auctions.order_id = orders.order_id
-        WHERE auctions.market_id = (?)
+        FROM dispatches
+        JOIN orders ON dispatches.order_id = orders.order_id
+        JOIN auctions ON auctions.auction_id = orders.auction_id
+        WHERE auctions.market_id = (?) AND dispatches.valid_at > (?)
+        GROUP BY round(dispatches.valid_at/60 - 0.5)
+        ORDER BY dispatches.valid_at DESC
+        LIMIT 720;
+            """, (market_id, start_time, ))
+    return cur.fetchall()
+
+
+@app.route('/get/cleared_energy')
+def get_cleared_value_energy():
+    # what reported in the auction table
+    market_id = request.args.get('market_id')
+    current_time = round(time.time()) # seconds since epoch
+    start_time = current_time - 12 * 60 * 60
+    cur = get_db().cursor().execute(f"""
+        SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
+        FROM dispatches
+        JOIN orders ON dispatches.order_id = orders.order_id
+        JOIN auctions ON auctions.auction_id = orders.auction_id
+        WHERE auctions.market_id = (?) AND dispatches.valid_at > (?)
         GROUP BY round(dispatches.valid_at/300 - 0.5)
         ORDER BY dispatches.valid_at DESC
         LIMIT 144;
-            """, (market_id, ))
+            """, (market_id, start_time, ))
     return cur.fetchall()
+
 
 # available
 ### update every 5 (300) mins
