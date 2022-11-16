@@ -24,11 +24,17 @@ def close_connection(exception):
         db.close()
 
 # TODO
+###
+#select distinct(resource_id), valid_at from resources order by valid_at;
+#
+
 # [resource_id] --> get [name] from most recent valid_at --> front end build drop down from [name]-->new query
 # [resource_id, current_name]
 # page, limit (20)
 # optional argument, last_resource_id
 # order return value yb resource id, return next 20 values greater than last_resource_id
+
+
 @app.route('/get/resources')
 def get_all_resources():
     cur = get_db().cursor().execute(f"""
@@ -37,7 +43,8 @@ def get_all_resources():
     rv = cur.fetchall()
     return str(rv)
 
-#/get/actual?resource_id=<id>
+# DEPRECATED
+# /get/actual?resource_id=<id>
 # TODO: now-12hours, Order
 # choose name to rerender
 # use resource id
@@ -50,7 +57,7 @@ def get_all_resources():
 #@app.route('/get/actual_energy') : GROUP BY round(meters.valid_at/300)
 @app.route('/get/actual_power')
 def get_actual_value():
-    resource_id = request.args.get('resource_id')
+    resource_id = request.args.get('resource_id') #market_id --> each resource has two markets
     # now - 12 hours
     cur = get_db().cursor().execute(f"""
             SELECT meters.valid_at AS x, sum(meters.real_power) AS y
@@ -58,7 +65,6 @@ def get_actual_value():
             JOIN agents ON devices.agent_id = agents.agent_id
             WHERE agents.resource_id = (?)
             GROUP BY round(meters.valid_at/60)
-            (ORDER BY) 
             ;
         """, (resource_id,))
 
@@ -68,21 +74,40 @@ def get_actual_value():
 # TODO: now-12hours, Order
 # use resource id
 # now - 12 hours
-# market interval 60 limit 720
-# market interval 300 limit 144
-#
+# market interval 60 limit 720 ---> power
+# market interval 300 limit 144 --> energy
+# order by 'x'
+# use market_id
+# can get negative quantity*
 @app.route('/get/cleared')
 def get_cleared_value():
     # what reported in the auction table
-    resource_name = request.args.get('name')
+    market_id = request.args.get('market_id')
     cur = get_db().cursor().execute(f"""
         SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
         FROM dispatches JOIN orders ON dispatches.order_id = orders.order_id
-        JOIN resources ON orders.resource_id = resources.resource_id
-        WHERE resources.resource_id = (?)
-        GROUP BY round(dispatches.valid_at/300);
-            """, (resource_name, ))
+        JOIN auctions ON auctions.order_id = orders.order_id
+        WHERE auctions.market_id = (?)
+        GROUP BY round(dispatches.valid_at/300 - 0.5)
+        ORDER BY dispatches.valid_at DESC
+        LIMIT 144;
+            """, (market_id, ))
     return cur.fetchall()
+
+# available
+### update every 5 (300) mins
+# 'now'
+# open_time = ROUND(now/300 - 0.5) * 300
+# one device supports only one market
+#
+# CURRENT_TIMESTAMP
+
+# SELECT devices.device_type as x, SUM(orders.quantity) as y
+# FROM orders 
+# JOIN devices ON orders.device_id = devices.device_id 
+# GROUP BY devices.device_type
+# WHERE orders.valid_at >= open_time ###
+
 
 if __name__ == "__main__":
     app.run(debug=True)
