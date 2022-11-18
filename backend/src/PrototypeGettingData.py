@@ -111,7 +111,7 @@ def get_cleared_value_power():
         ORDER BY dispatches.valid_at DESC
         LIMIT 720;
             """, (market_id, start_time, ))
-    return cur.fetchall()
+    return str(cur.fetchall())
 
 
 @app.route('/get/cleared_energy')
@@ -119,7 +119,9 @@ def get_cleared_value_energy():
     # what reported in the auction table
     market_id = request.args.get('market_id')
     current_time = round(time.time()) # seconds since epoch
-    start_time = current_time - 12 * 60 * 60
+    # TODO
+    # start_time = current_time - 12 * 60 * 60
+    start_time = 1668630660
     cur = get_db().cursor().execute(f"""
         SELECT dispatches.valid_at AS x, sum(dispatches.quantity) AS y
         FROM dispatches
@@ -130,11 +132,11 @@ def get_cleared_value_energy():
         ORDER BY dispatches.valid_at DESC
         LIMIT 144;
             """, (market_id, start_time, ))
-    return cur.fetchall()
+    return str(cur.fetchall())
 
 
 # available
-### update every 5 (300) mins
+### update every 5 (300) mins,
 # 'now'
 # open_time = ROUND(now/300 - 0.5) * 300
 # one device supports only one market
@@ -146,6 +148,22 @@ def get_cleared_value_energy():
 # JOIN devices ON orders.device_id = devices.device_id 
 # GROUP BY devices.device_type
 # WHERE orders.valid_at >= open_time ###
+
+@app.route('/get/available')
+def get_available():
+    # what reported in the auction table
+    current_time = round(time.time()) # seconds since epoch
+    # open_time = round(current_time / 300 - 0.5) * 300
+    # TODO
+    open_time = 0
+    cur = get_db().cursor().execute(f"""
+        SELECT devices.device_type as x, SUM(orders.quantity) as y
+        FROM orders 
+        JOIN devices ON orders.device_id = devices.device_id 
+        WHERE orders.valid_at >= (?)
+        GROUP BY devices.device_type;
+        """, (open_time, ))
+    return str(cur.fetchall())
 
 
 if __name__ == "__main__":
